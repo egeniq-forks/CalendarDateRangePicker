@@ -37,17 +37,19 @@ public class CalendarDateRangePickerViewController: UICollectionViewController {
 
     @objc public var disabledDates: [Date]?
 
-    @objc public var cellHighlightedColor = UIColor(white: 0.9, alpha: 1.0)
     @objc public static let defaultCellFontSize:CGFloat = 15.0
     @objc public static let defaultHeaderFontSize:CGFloat = 17.0
     @objc public var cellFont:UIFont = UIFont(name: "HelveticaNeue", size: CalendarDateRangePickerViewController.defaultCellFontSize)!
     @objc public var headerFont:UIFont = UIFont(name: "HelveticaNeue-Light", size: CalendarDateRangePickerViewController.defaultHeaderFontSize)!
 
-
+    @objc public var cellHighlightedColor = UIColor(white: 0.9, alpha: 1.0)
+    @objc public var labelColor = UIColor.darkGray
+    @objc public var headerLabelColor = UIColor.darkGray
     @objc public var selectedColor = UIColor(red: 66/255.0, green: 150/255.0, blue: 240/255.0, alpha: 1.0)
     @objc public var selectedLabelColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1.0)
     @objc public var highlightedLabelColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1.0)
     @objc public var titleText = "Select Dates"
+
 
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -277,8 +279,8 @@ extension CalendarDateRangePickerViewController : UICollectionViewDelegateFlowLa
     }
 
     public func collectionView(_ collectionView: UICollectionView,
-                               layout collectionViewLayout: UICollectionViewLayout,
-                               sizeForItemAt indexPath: IndexPath) -> CGSize {
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         let padding = collectionViewInsets.left + collectionViewInsets.right
         let availableWidth = view.frame.width - padding
         let itemWidth = availableWidth / CGFloat(itemsPerRow)
