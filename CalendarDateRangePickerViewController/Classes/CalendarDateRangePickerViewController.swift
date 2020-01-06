@@ -111,6 +111,7 @@ extension CalendarDateRangePickerViewController {
 
         cell.highlightedColor = self.cellHighlightedColor
         cell.selectedColor = self.selectedColor
+        cell.labelColor = self.labelColor
         cell.selectedLabelColor = self.selectedLabelColor
         cell.highlightedLabelColor = self.highlightedLabelColor
         cell.font = self.cellFont
