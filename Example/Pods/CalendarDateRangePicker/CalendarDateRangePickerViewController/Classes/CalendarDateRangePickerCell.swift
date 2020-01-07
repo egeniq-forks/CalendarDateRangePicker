@@ -11,6 +11,7 @@ import UIKit
 
 class CalendarDateRangePickerCell: UICollectionViewCell {
 
+    private let defaultTextColor = UIColor.darkGray
     var highlightedColor = UIColor(white: 0.9, alpha: 1.0)
     private let disabledColor = UIColor.lightGray
     var font = UIFont(name: "HelveticaNeue", size: CalendarDateRangePickerViewController.defaultCellFontSize) {
@@ -20,7 +21,6 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
     }
 
     @objc var selectedColor: UIColor!
-    @objc var labelColor: UIColor!
     @objc var selectedLabelColor: UIColor!
     @objc var highlightedLabelColor: UIColor!
     @objc var disabledDates: [Date]!
@@ -46,14 +46,14 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
         label = UILabel(frame: frame)
         label.center = CGPoint(x: frame.size.width / 2, y: frame.size.height / 2)
         label.font = font
-        label.textColor = labelColor
+        label.textColor = UIColor.darkGray
         label.textAlignment = NSTextAlignment.center
         self.addSubview(label)
     }
 
     @objc func reset() {
         self.backgroundColor = UIColor.clear
-        label.textColor = labelColor
+        label.textColor = defaultTextColor
         label.backgroundColor = UIColor.clear
         if selectedView != nil {
             selectedView?.removeFromSuperview()
