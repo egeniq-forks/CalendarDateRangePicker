@@ -11,7 +11,12 @@ import UIKit
 
 class CalendarDateRangePickerHeaderView: UICollectionReusableView {
 
-    @objc var labelColor: UIColor!
+    @objc var labelColor: UIColor! {
+        didSet {
+            label.textColor = labelColor
+        }
+    }
+
     @objc var label: UILabel!
     @objc var font = UIFont(name: "HelveticaNeue-Light", size: CalendarDateRangePickerViewController.defaultHeaderFontSize) {
         didSet {

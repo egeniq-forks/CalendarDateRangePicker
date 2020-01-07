@@ -11,18 +11,23 @@ import UIKit
 
 class CalendarDateRangePickerCell: UICollectionViewCell {
 
-    var highlightedColor = UIColor(white: 0.9, alpha: 1.0)
-    private let disabledColor = UIColor.lightGray
     var font = UIFont(name: "HelveticaNeue", size: CalendarDateRangePickerViewController.defaultCellFontSize) {
         didSet {
             label?.font = font
         }
     }
+    
+    var selectionFont = UIFont(name: "HelveticaNeue", size: CalendarDateRangePickerViewController.defaultCellFontSize)
+
+    @objc var labelColor: UIColor!
+
+    @objc var highlightedColor = UIColor(white: 0.9, alpha: 1.0)
+    @objc var highlightedLabelColor: UIColor!
+    @objc var disabledColor = UIColor.lightGray
 
     @objc var selectedColor: UIColor!
-    @objc var labelColor: UIColor!
     @objc var selectedLabelColor: UIColor!
-    @objc var highlightedLabelColor: UIColor!
+
     @objc var disabledDates: [Date]!
     @objc var disabledTimestampDates: [Int]?
     @objc var date: Date?
@@ -53,6 +58,7 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
 
     @objc func reset() {
         self.backgroundColor = UIColor.clear
+        label.font = font
         label.textColor = labelColor
         label.backgroundColor = UIColor.clear
         if selectedView != nil {
@@ -77,7 +83,7 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
         selectedView?.layer.cornerRadius = height / 2
         self.addSubview(selectedView!)
         self.sendSubviewToBack(selectedView!)
-
+        label.font = selectionFont
         label.textColor = selectedLabelColor
     }
 
@@ -89,7 +95,7 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
         halfBackgroundView?.backgroundColor = highlightedColor
         self.addSubview(halfBackgroundView!)
         self.sendSubviewToBack(halfBackgroundView!)
-        label.textColor = highlightedLabelColor
+        label.textColor = self.selectedLabelColor
         addRoundHighlightView()
     }
 
@@ -101,7 +107,7 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
         halfBackgroundView?.backgroundColor = highlightedColor
         self.addSubview(halfBackgroundView!)
         self.sendSubviewToBack(halfBackgroundView!)
-        label.textColor = highlightedLabelColor
+        label.textColor = self.selectedLabelColor
 
         addRoundHighlightView()
     }
@@ -119,7 +125,6 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
     @objc func highlight() {
         self.backgroundColor = highlightedColor
         label.textColor = highlightedLabelColor
-
     }
 
     @objc func disable() {

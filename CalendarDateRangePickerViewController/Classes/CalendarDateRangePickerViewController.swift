@@ -40,16 +40,17 @@ public class CalendarDateRangePickerViewController: UICollectionViewController {
     @objc public static let defaultCellFontSize:CGFloat = 15.0
     @objc public static let defaultHeaderFontSize:CGFloat = 17.0
     @objc public var cellFont:UIFont = UIFont(name: "HelveticaNeue", size: CalendarDateRangePickerViewController.defaultCellFontSize)!
+    @objc public var cellSelectionFont:UIFont = UIFont(name: "HelveticaNeue", size: CalendarDateRangePickerViewController.defaultCellFontSize)!
     @objc public var headerFont:UIFont = UIFont(name: "HelveticaNeue-Light", size: CalendarDateRangePickerViewController.defaultHeaderFontSize)!
 
     @objc public var cellHighlightedColor = UIColor(white: 0.9, alpha: 1.0)
+    @objc public var disabledLabelColor = UIColor.red
     @objc public var labelColor = UIColor.darkGray
     @objc public var headerLabelColor = UIColor.darkGray
     @objc public var selectedColor = UIColor(red: 66/255.0, green: 150/255.0, blue: 240/255.0, alpha: 1.0)
     @objc public var selectedLabelColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1.0)
     @objc public var highlightedLabelColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1.0)
     @objc public var titleText = "Select Dates"
-
 
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -112,9 +113,11 @@ extension CalendarDateRangePickerViewController {
         cell.highlightedColor = self.cellHighlightedColor
         cell.selectedColor = self.selectedColor
         cell.labelColor = self.labelColor
+        cell.disabledColor = self.disabledLabelColor
         cell.selectedLabelColor = self.selectedLabelColor
         cell.highlightedLabelColor = self.highlightedLabelColor
         cell.font = self.cellFont
+        cell.selectionFont = self.cellSelectionFont
         cell.reset()
         let blankItems = getWeekday(date: getFirstDateForSection(section: indexPath.section)) - 1
         if indexPath.item < 7 {
@@ -142,44 +145,7 @@ extension CalendarDateRangePickerViewController {
             }
 
             if selectedStartDate != nil && selectedEndDate != nil && isBefore(dateA: selectedStartDate!, dateB: date) && isBefore(dateA: date, dateB: selectedEndDate!) {
-                // Cell falls within selected range
-                if dayOfMonth == 1 {
-                    if #available(iOS 9.0, *) {
-                        if UIView.appearance().semanticContentAttribute == .forceRightToLeft {
-                            cell.highlightLeft()
-                        }
-                        else{
-                            cell.highlightRight()
-                        }
-                    } else {
-                        // Use the previous technique
-                        if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
-                            cell.highlightLeft()
-                        }
-                        else{
-                            cell.highlightRight()
-                        }
-                    }
-                } else if dayOfMonth == getNumberOfDaysInMonth(date: date) {
-                    if #available(iOS 9.0, *) {
-                        if UIView.appearance().semanticContentAttribute == .forceRightToLeft{
-                            cell.highlightRight()
-                        }
-                        else{
-                            cell.highlightLeft()
-                        }
-                    } else {
-                        // Use the previous technique
-                        if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
-                            cell.highlightRight()
-                        }
-                        else{
-                            cell.highlightLeft()
-                        }
-                    }
-                } else {
-                    cell.highlight()
-                }
+                cell.highlight()
             } else if selectedStartDate != nil && areSameDay(dateA: date, dateB: selectedStartDate!) {
                 // Cell is selected start date
                 cell.select()
@@ -230,6 +196,7 @@ extension CalendarDateRangePickerViewController {
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerReuseIdentifier, for: indexPath) as! CalendarDateRangePickerHeaderView
             headerView.label.text = getMonthLabel(date: getFirstDateForSection(section: indexPath.section))
             headerView.font = headerFont
+            headerView.labelColor = headerLabelColor
             return headerView
         default:
             fatalError("Unexpected element kind")
