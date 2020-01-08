@@ -77,6 +77,15 @@ public class CalendarDateRangePickerViewController: UICollectionViewController {
         self.navigationItem.rightBarButtonItem?.isEnabled = selectedStartDate != nil && selectedEndDate != nil
     }
 
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        guard let monthsToSelectedStartDate = Calendar.current.dateComponents([.month], from: minimumDate, to: selectedStartDate ?? minimumDate ).month else { return }
+        if monthsToSelectedStartDate <= collectionView.numberOfSections {
+            collectionView.scrollToItem(at: IndexPath(item: 0, section: monthsToSelectedStartDate), at: .top, animated: false)
+        }
+    }
+
     @objc func didTapCancel() {
         delegate.didCancelPickingDateRange()
     }
