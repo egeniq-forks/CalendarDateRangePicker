@@ -99,7 +99,7 @@ import UIKit
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        guard let monthsToSelectedStartDate = Calendar.current.dateComponents([.month], from: minimumDate, to: selectedStartDate ?? minimumDate ).month else { return }
+        guard let monthsToSelectedStartDate = Calendar.current.dateComponents([.month], from: minimumDate, to: selectedStartDate ?? maximumDate ).month else { return }
         if monthsToSelectedStartDate <= collectionView.numberOfSections {
             collectionView.scrollToItem(at: IndexPath(item: 0, section: monthsToSelectedStartDate), at: .top, animated: false)
         }
@@ -175,6 +175,8 @@ extension CalendarDateRangePickerViewController {
                 }
             }
             if isBefore(dateA: date, dateB: minimumDate) {
+                cell.disable()
+            } else if isAfter(dateA: date, dateB: maximumDate) {
                 cell.disable()
             }
 
@@ -424,6 +426,10 @@ extension CalendarDateRangePickerViewController {
 
     @objc func isBefore(dateA: Date, dateB: Date) -> Bool {
         return Calendar.current.compare(dateA, to: dateB, toGranularity: .day) == ComparisonResult.orderedAscending
+    }
+
+    @objc func isAfter(dateA: Date, dateB: Date) -> Bool {
+        return Calendar.current.compare(dateA, to: dateB, toGranularity: .day) == ComparisonResult.orderedDescending
     }
 
     @objc func isBetween(_ startDateCellIndex: IndexPath, and endDateCellIndex: IndexPath) -> Bool {
