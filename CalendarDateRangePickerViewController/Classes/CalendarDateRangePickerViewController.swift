@@ -339,17 +339,12 @@ extension CalendarDateRangePickerViewController {
             if let date = selectedEndDate ?? maximumDate {
                 let calendar = Calendar.current
                 var months = calendar.dateComponents([.month], from: calendar.startOfDay(for: minimumDate), to: calendar.startOfDay(for: date)).month ?? 0
-                
-                if selectedEndDate != nil {
-                    months = min(collectionView.numberOfSections, months + 1)
-                } else {
-                    months = min(collectionView.numberOfSections, months)
-                }
-                
+                months = min(collectionView.numberOfSections, months)
+
                 let days = calendar.dateComponents([.day], from: date).day ?? 0
                 
                 if months <= collectionView.numberOfSections {
-                    uCollectionView.scrollToItem(at: IndexPath(row: days, section: months), at: UICollectionView.ScrollPosition.centeredVertically, animated: false)
+                    uCollectionView.scrollToItem(at: IndexPath(row: days, section: months), at: UICollectionView.ScrollPosition.top, animated: false)
                 }
             }
         }
