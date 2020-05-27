@@ -99,7 +99,8 @@ import UIKit
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        guard let monthsToSelectedStartDate = Calendar.current.dateComponents([.month], from: minimumDate, to: selectedEndDate ?? maximumDate ).month else { return }
+        guard var monthsToSelectedStartDate = Calendar.current.dateComponents([.month], from: minimumDate, to: selectedEndDate ?? maximumDate ).month else { return }
+        monthsToSelectedStartDate += 1
         if monthsToSelectedStartDate <= collectionView.numberOfSections {
             collectionView.scrollToItem(at: IndexPath(item: 0, section: monthsToSelectedStartDate), at: .top, animated: false)
         }
