@@ -96,16 +96,6 @@ import UIKit
         self.navigationItem.rightBarButtonItem?.isEnabled = selectedStartDate != nil && selectedEndDate != nil
     }
 
-    public override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        guard var monthsToSelectedStartDate = Calendar.current.dateComponents([.month], from: minimumDate, to: selectedEndDate ?? maximumDate ).month else { return }
-        monthsToSelectedStartDate += 1
-        if monthsToSelectedStartDate <= collectionView.numberOfSections {
-            collectionView.scrollToItem(at: IndexPath(item: 0, section: monthsToSelectedStartDate), at: .top, animated: false)
-        }
-    }
-
     @objc func didTapCancel() {
         delegate.didCancelPickingDateRange()
     }
@@ -117,11 +107,9 @@ import UIKit
         delegate.didPickDateRange(startDate: selectedStartDate!, endDate: selectedEndDate!)
     }
 
-    public override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if selectedStartDate != nil {
-            self.scrollToSelection()
-        }
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        scrollToSelection()
     }
 }
 
@@ -348,11 +336,21 @@ extension CalendarDateRangePickerViewController {
     // Helper functions
     private func scrollToSelection() {
         if let uCollectionView = collectionView {
-            if let date = self.selectedStartDate {
+            if let date = selectedEndDate ?? maximumDate {
                 let calendar = Calendar.current
-                let yearDiff = calendar.component(.year, from: date) - calendar.component(.year, from: minimumDate)
-                let selectedMonth = calendar.component(.month, from: date) + yearDiff * 12 - (calendar.component(.month, from: Date()) + yearDiff * 12)
-                uCollectionView.scrollToItem(at: IndexPath(row: calendar.component(.day, from: date), section: selectedMonth - 1), at: UICollectionView.ScrollPosition.centeredVertically, animated: false)
+                var months = calendar.dateComponents([.month], from: calendar.startOfDay(for: minimumDate), to: calendar.startOfDay(for: date)).month ?? 0
+                
+                if selectedEndDate != nil {
+                    months = min(collectionView.numberOfSections, months + 1)
+                } else {
+                    months = min(collectionView.numberOfSections, months)
+                }
+                
+                let days = calendar.dateComponents([.day], from: date).day ?? 0
+                
+                if months <= collectionView.numberOfSections {
+                    uCollectionView.scrollToItem(at: IndexPath(row: days, section: months), at: UICollectionView.ScrollPosition.centeredVertically, animated: false)
+                }
             }
         }
     }
